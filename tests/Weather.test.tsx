@@ -54,6 +54,8 @@ describe('Weather Component', () => {
 
     expect(screen.getByText('23°C')).toBeInTheDocument()
     expect(screen.getByText('Clear sky')).toBeInTheDocument()
+    expect(screen.getByText(/15 km\/h/i)).toBeInTheDocument()
+    expect(screen.getByText(/65%/i)).toBeInTheDocument()
   })
 
   it('displays 3-day compact forecast', async () => {
@@ -297,6 +299,62 @@ describe('Weather Component', () => {
 
     await waitFor(() => {
       expect(screen.getByText('23°C')).toBeInTheDocument()
+    })
+  })
+
+  it('displays humidity and wind speed information', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockWeatherData,
+    })
+
+    render(<Weather />)
+
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: /Sydney, Australia/i })).toBeInTheDocument()
+    })
+
+    // Check for wind speed
+    expect(screen.getByText(/15 km\/h/i)).toBeInTheDocument()
+
+    // Check for humidity
+    expect(screen.getByText(/65%/i)).toBeInTheDocument()
+  })
+
+  it('updates humidity and wind when location changes', async () => {
+    const tokyoData = {
+      ...mockWeatherData,
+      current: {
+        temperature_2m: 18.5,
+        weather_code: 1,
+        wind_speed_10m: 22.8,
+        relative_humidity_2m: 75,
+      },
+    }
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockWeatherData,
+    })
+
+    render(<Weather />)
+
+    await waitFor(() => {
+      expect(screen.getByText(/15 km\/h/i)).toBeInTheDocument()
+      expect(screen.getByText(/65%/i)).toBeInTheDocument()
+    })
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => tokyoData,
+    })
+
+    const dropdown = screen.getByRole('combobox')
+    fireEvent.change(dropdown, { target: { value: 'Tokyo, Japan' } })
+
+    await waitFor(() => {
+      expect(screen.getByText(/23 km\/h/i)).toBeInTheDocument()
+      expect(screen.getByText(/75%/i)).toBeInTheDocument()
     })
   })
 })

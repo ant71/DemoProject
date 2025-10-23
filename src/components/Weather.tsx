@@ -290,6 +290,10 @@ function Weather() {
             <div className="current-description">
               {weatherCodeToDescription(weather.current.weatherCode)}
             </div>
+            <div className="current-details">
+              <span className="detail-item">💨 {weather.current.windSpeed} km/h</span>
+              <span className="detail-item">💧 {weather.current.humidity}%</span>
+            </div>
           </div>
         </div>
 
