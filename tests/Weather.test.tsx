@@ -49,16 +49,14 @@ describe('Weather Component', () => {
     render(<Weather />)
 
     await waitFor(() => {
-      expect(screen.getByText('Sydney, Australia Weather')).toBeInTheDocument()
+      expect(screen.getByRole('heading', { name: /Sydney, Australia/i })).toBeInTheDocument()
     })
 
     expect(screen.getByText('23°C')).toBeInTheDocument()
     expect(screen.getByText('Clear sky')).toBeInTheDocument()
-    expect(screen.getByText('Wind: 15 km/h')).toBeInTheDocument()
-    expect(screen.getByText('Humidity: 65%')).toBeInTheDocument()
   })
 
-  it('displays 7-day forecast', async () => {
+  it('displays 3-day compact forecast', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => mockWeatherData,
@@ -67,18 +65,15 @@ describe('Weather Component', () => {
     render(<Weather />)
 
     await waitFor(() => {
-      expect(screen.getByText('7-Day Forecast')).toBeInTheDocument()
+      expect(screen.getByRole('heading', { name: /Sydney, Australia/i })).toBeInTheDocument()
     })
 
     expect(screen.getByText('Today')).toBeInTheDocument()
     expect(screen.getByText('Tomorrow')).toBeInTheDocument()
 
-    // Check for temperature displays - getAllByText since there are multiple temp values
-    const temp25Elements = screen.getAllByText('25°')
-    expect(temp25Elements.length).toBeGreaterThan(0)
-
-    const temp26Elements = screen.getAllByText('26°')
-    expect(temp26Elements.length).toBeGreaterThan(0)
+    // Check for temperature displays in compact format "max° / min°"
+    expect(screen.getByText('25° / 18°')).toBeInTheDocument()
+    expect(screen.getByText('26° / 19°')).toBeInTheDocument()
   })
 
   it('displays error message when fetch fails', async () => {
@@ -112,14 +107,14 @@ describe('Weather Component', () => {
     render(<Weather />)
 
     await waitFor(() => {
-      expect(screen.getByText('Sydney, Australia Weather')).toBeInTheDocument()
+      expect(screen.getByRole('heading', { name: /Sydney, Australia/i })).toBeInTheDocument()
     })
 
     const dropdown = screen.getByRole('combobox')
     fireEvent.change(dropdown, { target: { value: 'Tokyo, Japan' } })
 
     await waitFor(() => {
-      expect(screen.getByText('Tokyo, Japan Weather')).toBeInTheDocument()
+      expect(screen.getByRole('heading', { name: /Tokyo, Japan/i })).toBeInTheDocument()
     })
 
     // Verify fetch was called with Tokyo coordinates
@@ -146,14 +141,14 @@ describe('Weather Component', () => {
     render(<Weather />)
 
     await waitFor(() => {
-      expect(screen.getByText('Sydney, Australia Weather')).toBeInTheDocument()
+      expect(screen.getByRole('heading', { name: /Sydney, Australia/i })).toBeInTheDocument()
     })
 
     const geoButton = screen.getByTitle('Use my current location')
     fireEvent.click(geoButton)
 
     await waitFor(() => {
-      expect(screen.getByText('Current Location Weather')).toBeInTheDocument()
+      expect(screen.getByRole('heading', { name: /Current Location/i })).toBeInTheDocument()
     })
 
     expect(mockGeolocation.getCurrentPosition).toHaveBeenCalled()
@@ -174,7 +169,7 @@ describe('Weather Component', () => {
     render(<Weather />)
 
     await waitFor(() => {
-      expect(screen.getByText('Sydney, Australia Weather')).toBeInTheDocument()
+      expect(screen.getByRole('heading', { name: /Sydney, Australia/i })).toBeInTheDocument()
     })
 
     const geoButton = screen.getByTitle('Use my current location')
@@ -203,7 +198,7 @@ describe('Weather Component', () => {
     render(<Weather />)
 
     await waitFor(() => {
-      expect(screen.getByText('Sydney, Australia Weather')).toBeInTheDocument()
+      expect(screen.getByRole('heading', { name: /Sydney, Australia/i })).toBeInTheDocument()
     })
 
     const geoButton = screen.getByTitle('Use my current location')
@@ -270,7 +265,7 @@ describe('Weather Component', () => {
     render(<Weather />)
 
     await waitFor(() => {
-      expect(screen.getByText('Sydney, Australia Weather')).toBeInTheDocument()
+      expect(screen.getByRole('heading', { name: /Sydney, Australia/i })).toBeInTheDocument()
     })
 
     const dropdown = screen.getByRole('combobox') as HTMLSelectElement

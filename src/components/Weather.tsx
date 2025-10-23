@@ -254,8 +254,7 @@ function Weather() {
   return (
     <div className="weather-container">
       <div className="weather-header">
-        <h2 className="weather-title">{selectedLocation.name} Weather</h2>
-
+        <h3 className="weather-title">{selectedLocation.name}</h3>
         <div className="location-selector">
           <select
             value={selectedLocation.name === 'Current Location' ? '' : selectedLocation.name}
@@ -270,7 +269,6 @@ function Weather() {
               <option key={loc.name} value={loc.name}>{loc.name}</option>
             ))}
           </select>
-
           <button
             onClick={getCurrentLocation}
             disabled={gettingLocation}
@@ -282,32 +280,28 @@ function Weather() {
         </div>
       </div>
 
-      <div className="current-weather">
-        <div className="current-icon">
-          {weatherCodeToEmoji(weather.current.weatherCode)}
+      <div className="weather-content">
+        <div className="current-weather">
+          <div className="current-icon">
+            {weatherCodeToEmoji(weather.current.weatherCode)}
+          </div>
+          <div className="current-info">
+            <div className="current-temp">{weather.current.temperature}°C</div>
+            <div className="current-description">
+              {weatherCodeToDescription(weather.current.weatherCode)}
+            </div>
+          </div>
         </div>
-        <div className="current-temp">{weather.current.temperature}°C</div>
-        <div className="current-description">
-          {weatherCodeToDescription(weather.current.weatherCode)}
-        </div>
-        <div className="current-details">
-          <span>Wind: {weather.current.windSpeed} km/h</span>
-          <span>Humidity: {weather.current.humidity}%</span>
-        </div>
-      </div>
 
-      <div className="forecast">
-        <h3 className="forecast-title">7-Day Forecast</h3>
-        <div className="forecast-grid">
-          {weather.daily.dates.slice(0, 7).map((date, index) => (
-            <div key={date} className="forecast-day">
-              <div className="forecast-date">{formatDate(date, index)}</div>
-              <div className="forecast-icon">
+        <div className="forecast-compact">
+          {weather.daily.dates.slice(0, 3).map((date, index) => (
+            <div key={date} className="forecast-day-compact">
+              <div className="forecast-date-compact">{formatDate(date, index)}</div>
+              <div className="forecast-icon-compact">
                 {weatherCodeToEmoji(weather.daily.weatherCodes[index])}
               </div>
-              <div className="forecast-temps">
-                <span className="temp-max">{weather.daily.maxTemps[index]}°</span>
-                <span className="temp-min">{weather.daily.minTemps[index]}°</span>
+              <div className="forecast-temps-compact">
+                {weather.daily.maxTemps[index]}° / {weather.daily.minTemps[index]}°
               </div>
             </div>
           ))}

@@ -15,6 +15,8 @@ function App() {
           <h1 className="main-title">This is a demo project</h1>
           <p className="subtitle">Built with React, TypeScript & Vite</p>
 
+          <Weather />
+
           <div className="feature-cards">
             <div className="feature-card">
               <div className="icon">⚡</div>
@@ -32,8 +34,6 @@ function App() {
               <p>Production-ready setup</p>
             </div>
           </div>
-
-          <Weather />
         </div>
       </div>
     </div>

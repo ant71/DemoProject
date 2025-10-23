@@ -87,7 +87,7 @@ describe('App', () => {
     render(<App />)
 
     await waitFor(() => {
-      expect(screen.getByText('Sydney, Australia Weather')).toBeInTheDocument()
+      expect(screen.getByRole('heading', { name: /Sydney, Australia/i })).toBeInTheDocument()
       expect(screen.getByText('23°C')).toBeInTheDocument()
     })
   })
