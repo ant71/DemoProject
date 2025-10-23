@@ -1,4 +1,5 @@
 import './App.css'
+import Weather from './components/Weather'
 
 function App() {
   return (
@@ -31,6 +32,8 @@ function App() {
               <p>Production-ready setup</p>
             </div>
           </div>
+
+          <Weather />
         </div>
       </div>
     </div>
